@@ -34,6 +34,7 @@ const localBusinessJsonLd =
 <html lang="ro">
 	<head>
 		<meta charset="UTF-8" />
+		<meta name="referrer" content="strict-origin-when-cross-origin" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
@@ -48,7 +49,7 @@ const localBusinessJsonLd =
 
 		{
 			localBusinessJsonLd && (
-				<script type="application/ld+json" set:html={JSON.stringify(localBusinessJsonLd)} />
+				<script is:inline type="application/ld+json" set:html={JSON.stringify(localBusinessJsonLd)} />
 			)
 		}
 

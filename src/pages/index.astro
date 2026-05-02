@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/home/Hero.astro';
-import FilmSection from '../components/home/FilmSection.astro';
 import AboutSection from '../components/home/AboutSection.astro';
 import FeaturedWeddings from '../components/home/FeaturedWeddings.astro';
 import { seoPages } from '../data/seo-config';
@@ -9,7 +8,6 @@ import { seoPages } from '../data/seo-config';
 
 <BaseLayout title={seoPages.home.title} description={seoPages.home.description} ogImage={seoPages.home.ogImage}>
 	<Hero />
-	<FilmSection />
 	<AboutSection />
 	<FeaturedWeddings />
 </BaseLayout>

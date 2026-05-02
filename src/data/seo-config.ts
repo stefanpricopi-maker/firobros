@@ -90,8 +90,14 @@ export const seoPages = {
 		ogImage: seoDefaultOgImage,
 	},
 
+	video: {
+		title: `Video - Nuntă Creștină - ${short}`,
+		description: `${seoSiteName} — videoclipuri de nuntă și evenimente pe YouTube. Cluj-Napoca și deplasări.`,
+		ogImage: seoDefaultOgImage,
+	},
+
 	despre: {
-		title: `Despre - Nuntă Neoprotestantă Cluj - ${short}`,
+		title: `Cine suntem? - Nuntă Neoprotestantă Cluj - ${short}`,
 		description: `Cum lucrăm cu cupluri din biserici neoprotestante: planificare, respect pentru ritualuri, livrare galerie și film. ${seoSiteName}.`,
 	},
 

@@ -4,10 +4,11 @@
  * Dacă `alt` lipsește, se derivează din `filePathHint` sau din `src` (nume fișier).
  */
 import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import { resolveImageAlt } from '../lib/image-alt';
 
 type Props = {
-	src: import('astro').ImageMetadata | string;
+	src: ImageMetadata | string;
 	alt?: string;
 	/** Cale modul/glob (ex. din `import.meta.glob`) pentru alt când `alt` lipsește */
 	filePathHint?: string;
@@ -38,10 +39,11 @@ const {
 
 const resolvedAlt = resolveImageAlt(alt, { src, filePathHint });
 
-const isDevRemote =
-	import.meta.env.DEV &&
-	typeof src === 'string' &&
-	(src.startsWith('https://') || src.startsWith('http://'));
+/** URL remote (inclusiv fallback hero în producție) — `Picture` acceptă doar `ImageMetadata`. */
+const isRemoteUrl =
+	typeof src === 'string' && (src.startsWith('https://') || src.startsWith('http://'));
+
+const isDevRemote = import.meta.env.DEV && isRemoteUrl;
 
 function remoteSrcAtWidth(url: string, w: number): string {
 	try {
@@ -55,13 +57,17 @@ function remoteSrcAtWidth(url: string, w: number): string {
 ---
 
 {
-	isDevRemote ? (
+	isRemoteUrl ? (
 		<img
-			src={remoteSrcAtWidth(src as string, width)}
-			srcset={(widths as number[])
-				.map((w) => `${remoteSrcAtWidth(src as string, w)} ${w}w`)
-				.join(', ')}
-			sizes={sizes}
+			src={isDevRemote ? remoteSrcAtWidth(src, width) : src}
+			srcset={
+				isDevRemote
+					? (widths as number[])
+							.map((w) => `${remoteSrcAtWidth(src, w)} ${w}w`)
+							.join(', ')
+					: undefined
+			}
+			sizes={isDevRemote ? sizes : undefined}
 			alt={resolvedAlt}
 			width={width}
 			height={height}
@@ -72,7 +78,7 @@ function remoteSrcAtWidth(url: string, w: number): string {
 		/>
 	) : (
 		<Picture
-			src={src}
+			src={src as ImageMetadata}
 			alt={resolvedAlt}
 			width={width}
 			height={height}

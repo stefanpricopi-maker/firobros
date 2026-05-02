@@ -3,8 +3,8 @@
 ## În lucru acum (dezvoltare site)
 
 ### Conținut & brand
-- [x] Texte **100% RO** (home, film, despre, portofoliu, contact, JSON-LD `knowsAbout`); termeni consacrați (TTD, Trash the Dress) păstrați unde e util pentru căutare.
-- [x] **Film**: secțiune pe **/** (`#film`), embed YouTube sau Vimeo opțional în `src/data/film.ts`, link în nav.
+- [x] Texte **100% RO** (home, despre, portofoliu, contact, JSON-LD `knowsAbout`); termeni consacrați (TTD, Trash the Dress) păstrați unde e util pentru căutare.
+- [ ] **Film**: secțiunea de pe **/** a fost scoasă; brandul rămâne „Image & Film”; poți reintroduce mai târziu un bloc video + date dacă vrei.
 - [x] **Social / email**: sursă unică `src/data/site-contact.ts` (email + profile opționale); UI în `SocialLinks.astro` — completează href-urile reale înainte de launch.
 - [ ] **Momente alese** (`featured-weddings.ts`): completează `featuredDetails` cu titluri / locații reale sau lasă `featured/` gol — secțiunea rămâne ascunsă fără imagini.
 
