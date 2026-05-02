@@ -1,4 +1,6 @@
 ---
+import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
 import OptimizedPicture from '../OptimizedPicture.astro';
 import type { PortfolioEntry } from '../../lib/portfolio';
 
@@ -7,27 +9,59 @@ interface Props {
 }
 
 const { photos } = Astro.props;
+
+/** PhotoSwipe are nevoie de un URL real către imagine (ex. `/_image?…`), nu de `ImageMetadata.src` brut. */
+function isLocalAsset(src: PortfolioEntry['src']): src is ImageMetadata {
+	return typeof src === 'object' && src !== null && 'width' in src && 'height' in src && 'src' in src;
+}
+
+const LIGHTBOX_MAX = 2400;
+
+const photosResolved: PortfolioEntry[] = await Promise.all(
+	photos.map(async (p) => {
+		if (!isLocalAsset(p.src)) {
+			return p;
+		}
+		const scale = p.width > LIGHTBOX_MAX ? LIGHTBOX_MAX / p.width : 1;
+		const tw = Math.max(1, Math.round(p.width * scale));
+		const th = Math.max(1, Math.round(p.height * scale));
+		const { src: lightboxSrc } = await getImage({
+			src: p.src,
+			width: tw,
+			height: th,
+			format: 'jpeg',
+		});
+		return {
+			...p,
+			lightboxUrl: lightboxSrc,
+			pswpWidth: tw,
+			pswpHeight: th,
+		};
+	}),
+);
 ---
 
 <div id="portfolio-masonry" class="masonry-columns mx-auto max-w-6xl px-5 pb-20 sm:px-8">
 	<ul class="masonry-inner">
 		{
-			photos.map((photo) => (
+			photosResolved.map((photo) => (
 				<li class="masonry-item mb-4 break-inside-avoid sm:mb-5">
 					<a
 						href={photo.lightboxUrl}
+						data-pswp-src={photo.lightboxUrl}
 						data-pswp-width={photo.pswpWidth}
 						data-pswp-height={photo.pswpHeight}
-						class="block overflow-hidden rounded-sm bg-ink/5 outline-none ring-offset-2 transition hover:opacity-95 focus-visible:ring-2 focus-visible:ring-accent"
+						class="block cursor-zoom-in overflow-hidden rounded-sm bg-ink/5 outline-none ring-offset-2 transition hover:opacity-95 focus-visible:ring-2 focus-visible:ring-accent"
 					>
 						<OptimizedPicture
 							src={photo.src}
 							alt={photo.alt}
+							filePathHint={photo.id.startsWith('local-') ? photo.id.slice(6) : undefined}
 							width={photo.width}
 							height={photo.height}
 							widths={[400, 600, 800, 1000, 1200]}
 							sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-							class="w-full rounded-sm bg-ink/5"
+							class="w-full rounded-sm bg-ink/5 pointer-events-none"
 							loading="lazy"
 						/>
 					</a>
@@ -63,13 +97,23 @@ const { photos } = Astro.props;
 	import PhotoSwipeLightbox from 'photoswipe/lightbox';
 	import 'photoswipe/style.css';
 
-	const gallery = document.getElementById('portfolio-masonry');
-	if (gallery) {
+	function initGalleryLightbox() {
+		const root = document.getElementById('portfolio-masonry');
+		if (!root || root.dataset.pswpLightboxBound === '1') return;
+		root.dataset.pswpLightboxBound = '1';
+
 		const lightbox = new PhotoSwipeLightbox({
 			gallery: '#portfolio-masonry',
-			children: 'a',
+			children: 'ul.masonry-inner > li > a',
 			pswpModule: () => import('photoswipe'),
+			initialZoomLevel: 'fit',
 		});
 		lightbox.init();
+	}
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', initGalleryLightbox, { once: true });
+	} else {
+		initGalleryLightbox();
 	}
 </script>

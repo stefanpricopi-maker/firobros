@@ -21,7 +21,7 @@ const featuredImages = import.meta.glob<{ default: ImageMetadata }>(
  */
 export const featuredDetails: { title: string; location: string; href?: string }[] = [
 	// Exemplu după ce adaugi poze în `src/assets/images/featured/`:
-	// { title: 'Ana & Dan', location: 'Cluj-Napoca', href: '/portofoliu' },
+	// { title: 'Ana & Dan', location: 'Cluj-Napoca', href: '/portofoliu/' },
 	// { title: 'Maria & Paul', location: 'București' },
 ];
 
@@ -41,7 +41,7 @@ export function getFeaturedWeddings(): FeaturedWedding[] {
 		const d = featuredDetails[i];
 		const title = d?.title ?? titleFromPath(path);
 		const location = d?.location ?? '';
-		const href = d?.href ?? '/portofoliu';
+		const href = d?.href ?? '/portofoliu/';
 		out.push({
 			title,
 			location,

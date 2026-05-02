@@ -1,10 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { seoPages } from '../data/seo-config';
 ---
 
 <BaseLayout
-	title="Pagină negăsită — Firobros"
-	description="Această pagină nu există sau a fost mutată."
+	title={seoPages.notFound.title}
+	description={seoPages.notFound.description}
 	noindex={true}
 >
 	<div class="mx-auto max-w-lg px-5 py-24 text-center sm:py-32">
@@ -21,13 +22,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 				Acasă
 			</a>
 			<a
-				href="/portofoliu"
+				href="/portofoliu/"
 				class="inline-flex justify-center border border-ink/20 bg-white px-8 py-3 text-xs font-medium uppercase tracking-widest text-ink transition hover:border-ink/40"
 			>
 				Portofoliu
 			</a>
 			<a
-				href="/contact"
+				href="/contact/"
 				class="inline-flex justify-center border border-transparent px-8 py-3 text-xs font-medium uppercase tracking-widest text-ink-muted underline-offset-4 transition hover:text-ink hover:underline"
 			>
 				Contact

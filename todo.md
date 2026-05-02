@@ -3,15 +3,15 @@
 ## În lucru acum (dezvoltare site)
 
 ### Conținut & brand
-- [ ] Texte **100% RO** (hero, home, contact — încă există engleză pe unele secțiuni).
+- [x] Texte **100% RO** (home, film, despre, portofoliu, contact, JSON-LD `knowsAbout`); termeni consacrați (TTD, Trash the Dress) păstrați unde e util pentru căutare.
 - [x] **Film**: secțiune pe **/** (`#film`), embed YouTube sau Vimeo opțional în `src/data/film.ts`, link în nav.
 - [x] **Social / email**: sursă unică `src/data/site-contact.ts` (email + profile opționale); UI în `SocialLinks.astro` — completează href-urile reale înainte de launch.
-- [ ] **Featured / Best of**: înlocuiește titluri și locații din `featured-weddings.ts` cu proiecte reale sau ascunde până ai materiale.
+- [ ] **Momente alese** (`featured-weddings.ts`): completează `featuredDetails` cu titluri / locații reale sau lasă `featured/` gol — secțiunea rămâne ascunsă fără imagini.
 
 ### Imagini
 - [x] **Portofoliu**: doar imagini locale din `portfolio/{cununie,nunta,trash-the-dress}/`; `gallery-photos.ts` e gol (adaugă URL-uri doar dacă vrei stock în plus).
 - [x] **Despre**: portret din `src/assets/images/despre/*` (primul fișier alfabetic); fără fișier → fallback Unsplash + mesaj scurt.
-- [x] **Best of**: imagini din `src/assets/images/featured/` + titluri opționale în `featuredDetails` (`featured-weddings.ts`); fără fișiere → secțiunea e ascunsă.
+- [x] **Momente alese**: imagini din `src/assets/images/featured/` + titluri opționale în `featuredDetails` (`featured-weddings.ts`); fără fișiere → secțiunea e ascunsă.
 
 ### Contact & conversie
 - [x] Formular: etichete/placeholder-e în română; câmp opțional **Telefon**; `action="/contact/success/"` pentru Netlify.

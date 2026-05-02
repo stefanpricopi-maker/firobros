@@ -1,28 +1,33 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import SEO from '../components/SEO.astro';
+import { getLocalBusinessJsonLd, seoBusiness } from '../data/seo-config';
 import '../styles/global.css';
 
 type Props = {
 	title: string;
 	description?: string;
-	/** URL absolut sau path relativ la `site` pentru Open Graph / preview social. */
 	ogImage?: string;
-	/** Pagini precum 404: nu indexa în motoarele de căutare. */
 	noindex?: boolean;
+	omitLocalBusinessJsonLd?: boolean;
+	/** Suprascrie lista implicită de cuvinte cheie din seo-config */
+	keywords?: string[];
 };
 
 const {
 	title,
-	description = 'Firobros — image and film. Fotografie și film de nuntă, cu atenție la lumină și emoție.',
+	description = seoBusiness.description,
 	ogImage,
 	noindex = false,
+	omitLocalBusinessJsonLd = false,
+	keywords,
 } = Astro.props;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const defaultOg =
-	'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&w=1200&q=85';
-const rawOg = ogImage ?? defaultOg;
-const ogImageAbsolute = /^https?:\/\//i.test(rawOg) ? rawOg : new URL(rawOg, Astro.site).href;
+
+const localBusinessJsonLd =
+	!omitLocalBusinessJsonLd && Astro.site
+		? getLocalBusinessJsonLd({ siteOrigin: Astro.site.href })
+		: null;
 ---
 
 <!doctype html>
@@ -32,21 +37,20 @@ const ogImageAbsolute = /^https?:\/\//i.test(rawOg) ? rawOg : new URL(rawOg, Ast
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-		<meta name="description" content={description} />
-		{noindex && <meta name="robots" content="noindex, follow" />}
-		<link rel="canonical" href={canonicalURL} />
 
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
-		<meta property="og:image" content={ogImageAbsolute} />
-		<meta property="og:url" content={canonicalURL.href} />
-		<meta property="og:type" content="website" />
-		<meta property="og:locale" content="ro_RO" />
-		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:title" content={title} />
-		<meta name="twitter:description" content={description} />
-		<meta name="twitter:image" content={ogImageAbsolute} />
+		<SEO
+			title={title}
+			description={description}
+			image={ogImage}
+			noindex={noindex}
+			keywords={keywords}
+		/>
+
+		{
+			localBusinessJsonLd && (
+				<script type="application/ld+json" set:html={JSON.stringify(localBusinessJsonLd)} />
+			)
+		}
 
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

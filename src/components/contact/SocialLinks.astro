@@ -9,7 +9,7 @@ const profileLinks = siteContact.profiles
 
 const links = [
 	...profileLinks.map((p) => ({ ...p, kind: 'external' as const })),
-	{ label: 'E-mail', href: mailto, kind: 'email' as const },
+	{ label: 'Scrie-ne pe e-mail', href: mailto, kind: 'email' as const },
 ];
 ---
 

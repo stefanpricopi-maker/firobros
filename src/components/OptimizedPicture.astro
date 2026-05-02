@@ -1,15 +1,16 @@
 ---
 /**
- * Wraps `Picture` with AVIF + WebP sources. Remote URLs must be allowlisted in `astro.config.mjs`.
- *
- * În `astro dev`, imaginile remote ocolesc `/_image` (Sharp/fetch pot da 500 în unele medii) și folosesc
- * direct URL-ul — la `astro build` rămâne optimizarea completă.
+ * Imagini prin astro:assets — **WebP primul** în lista de formate (viteză), apoi AVIF.
+ * Dacă `alt` lipsește, se derivează din `filePathHint` sau din `src` (nume fișier).
  */
 import { Picture } from 'astro:assets';
+import { resolveImageAlt } from '../lib/image-alt';
 
 type Props = {
 	src: import('astro').ImageMetadata | string;
-	alt: string;
+	alt?: string;
+	/** Cale modul/glob (ex. din `import.meta.glob`) pentru alt când `alt` lipsește */
+	filePathHint?: string;
 	width: number;
 	height: number;
 	widths?: number[];
@@ -17,12 +18,14 @@ type Props = {
 	class?: string;
 	loading?: 'lazy' | 'eager';
 	fetchpriority?: 'high' | 'low' | 'auto';
+	/** Ordinea: WebP primul (brief viteză), apoi AVIF pentru browsere moderne */
 	formats?: ('avif' | 'webp' | 'jpeg' | 'png')[];
 };
 
 const {
 	src,
 	alt,
+	filePathHint,
 	width,
 	height,
 	widths = [400, 640, 960, 1280, 1600],
@@ -30,8 +33,10 @@ const {
 	class: className,
 	loading = 'lazy',
 	fetchpriority,
-	formats = ['avif', 'webp'],
+	formats = ['webp', 'avif'],
 } = Astro.props;
+
+const resolvedAlt = resolveImageAlt(alt, { src, filePathHint });
 
 const isDevRemote =
 	import.meta.env.DEV &&
@@ -57,7 +62,7 @@ function remoteSrcAtWidth(url: string, w: number): string {
 				.map((w) => `${remoteSrcAtWidth(src as string, w)} ${w}w`)
 				.join(', ')}
 			sizes={sizes}
-			alt={alt}
+			alt={resolvedAlt}
 			width={width}
 			height={height}
 			class={className}
@@ -68,7 +73,7 @@ function remoteSrcAtWidth(url: string, w: number): string {
 	) : (
 		<Picture
 			src={src}
-			alt={alt}
+			alt={resolvedAlt}
 			width={width}
 			height={height}
 			widths={widths}

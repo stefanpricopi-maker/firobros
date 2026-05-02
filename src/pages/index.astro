@@ -4,13 +4,10 @@ import Hero from '../components/home/Hero.astro';
 import FilmSection from '../components/home/FilmSection.astro';
 import AboutSection from '../components/home/AboutSection.astro';
 import FeaturedWeddings from '../components/home/FeaturedWeddings.astro';
+import { seoPages } from '../data/seo-config';
 ---
 
-<BaseLayout
-	title="Firobros — image and film"
-	description="Fotografie și film de nuntă, stil fine-art. Portofoliu, film, despre cum lucrăm și contact."
-	ogImage="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&w=1200&q=85"
->
+<BaseLayout title={seoPages.home.title} description={seoPages.home.description} ogImage={seoPages.home.ogImage}>
 	<Hero />
 	<FilmSection />
 	<AboutSection />

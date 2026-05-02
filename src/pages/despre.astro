@@ -2,13 +2,17 @@
 import type { ImageMetadata } from 'astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import OptimizedPicture from '../components/OptimizedPicture.astro';
+import { seoPages } from '../data/seo-config';
 
+// Orice imagine din `src/assets/images/despre/` (și subfoldere). Repornește `npm run dev` după ce adaugi fișiere — Vite poate să nu reîncarce `import.meta.glob` la cald.
 const portraitModules = import.meta.glob<{ default: ImageMetadata }>(
-	'../assets/images/despre/*.{jpeg,jpg,png,webp,JPEG,JPG,PNG,WEBP}',
+	'../assets/images/despre/**/*.{jpeg,jpg,png,webp,avif,JPEG,JPG,PNG,WEBP,AVIF}',
 	{ eager: true },
 );
 
-const portraitPath = Object.keys(portraitModules).sort()[0];
+const isImagePath = (p: string) => /\.(avif|jpeg|jpg|png|webp)$/i.test(p);
+
+const portraitPath = Object.keys(portraitModules).filter(isImagePath).sort()[0];
 const portraitAsset = portraitPath ? portraitModules[portraitPath]?.default : null;
 
 const fallbackSrc =
@@ -24,11 +28,7 @@ const ogImageUrl =
 		: fallbackSrc;
 ---
 
-<BaseLayout
-	title="Despre — Firobros"
-	description="Cum lucrăm la Firobros: abordare calmă, livrabile foto și film, și pașii până la ziua nunții."
-	ogImage={ogImageUrl}
->
+<BaseLayout title={seoPages.despre.title} description={seoPages.despre.description} ogImage={ogImageUrl}>
 	<div class="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
 		<div class="mx-auto max-w-3xl text-center">
 			<h1 class="text-4xl font-medium sm:text-5xl">Despre</h1>
@@ -40,7 +40,8 @@ const ogImageUrl =
 				<div class="mx-auto max-w-sm overflow-hidden rounded-sm bg-ink/5 lg:mx-0">
 					<OptimizedPicture
 						src={src}
-						alt="Portret echipă Firobros"
+						alt="Portret echipă Firobros Image & Film"
+						filePathHint={portraitPath}
 						width={width}
 						height={height}
 						widths={[400, 560, 800, Math.min(width, 1200)]}
@@ -53,8 +54,9 @@ const ogImageUrl =
 				{
 					!portraitAsset && (
 						<p class="mt-4 text-center text-sm text-ink-muted lg:text-left">
-							Adaugă un portret în <code class="text-xs">src/assets/images/despre/</code> (ex.{' '}
-							<code class="text-xs">portret.jpg</code>) — se încarcă automat.
+							Adaugă un portret în <code class="text-xs">src/assets/images/despre/</code> (JPEG, PNG,
+							WebP sau AVIF) — se încarcă automat. Dacă rulezi deja{' '}
+							<code class="text-xs">npm run dev</code>, repornește serverul după ce copiezi fișierul.
 						</p>
 					)
 				}
@@ -64,9 +66,13 @@ const ogImageUrl =
 				<div>
 					<h2 class="font-serif text-2xl text-ink">Cine suntem</h2>
 					<p class="mt-4 leading-relaxed">
-						Firobros este un studio de <strong class="font-medium text-ink">imagine și film</strong>,
-						concentrat pe nunți și evenimente intime. Ne dorim imagini curate, emoție autentică și un
-						ritm vizual care îmbătrânește frumos — fără trenduri agresive sau culori exagerate.
+						<strong class="font-medium text-ink">Firobros Image & Film</strong> este un studio din{' '}
+						<strong class="font-medium text-ink">Cluj-Napoca</strong>, specializat în{' '}
+						<strong class="font-medium text-ink">fotografie și film de nuntă neoprotestantă</strong>{' '}
+						(penticostali, baptiști, adventiști și alte biserici creștine similare), plus sesiuni{' '}
+						<strong class="font-medium text-ink">Trash the Dress</strong>. Lucrăm și la distanță, pe
+						întreg teritoriul țării. Ne dorim imagini curate, emoție autentică și un ritm vizual care
+						îmbătrânește frumos — fără trenduri agresive sau culori exagerate.
 					</p>
 				</div>
 
@@ -83,14 +89,15 @@ const ogImageUrl =
 						</li>
 						<li>
 							<strong class="text-ink">După:</strong> selecție și editare manuală; primiți galerie
-							și, unde e cazul, teaser sau film — în formate optimizate pentru web și arhivare.
+							și, unde e cazul, previzualizare video scurtă sau film — în formate optimizate pentru web și
+							arhivare.
 						</li>
 					</ol>
 				</div>
 
 				<p class="pt-2">
 					<a
-						href="/contact"
+						href="/contact/"
 						class="inline-flex border border-ink bg-ink px-6 py-3 text-xs font-medium uppercase tracking-widest text-cream transition hover:bg-ink/90"
 					>
 						Programează o discuție

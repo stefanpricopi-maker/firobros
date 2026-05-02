@@ -2,12 +2,13 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ContactForm from '../components/contact/ContactForm.astro';
 import SocialLinks from '../components/contact/SocialLinks.astro';
+import { seoPages } from '../data/seo-config';
 ---
 
 <BaseLayout
-	title="Contact — Firobros"
-	description="Scrie-ne despre dată, locație și ce vă doriți din partea de foto și film."
-	ogImage="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&w=1200&q=85"
+	title={seoPages.contact.title}
+	description={seoPages.contact.description}
+	ogImage={seoPages.contact.ogImage}
 >
 	<div class="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
 		<div class="mx-auto max-w-xl text-center">

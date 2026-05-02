@@ -1,6 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import sitemap from '@astrojs/sitemap';
+import sitemap, { ChangeFreqEnum } from '@astrojs/sitemap';
 import { loadEnv } from 'vite';
 
 import tailwindcss from '@tailwindcss/vite';
@@ -18,7 +18,20 @@ const site =
 // https://astro.build/config
 export default defineConfig({
 	site,
-	integrations: [sitemap()],
+	integrations: [
+		sitemap({
+			serialize(item) {
+				const u = item.url;
+				if (u.includes('/portofoliu/nunta') || u.includes('/portofoliu/trash-the-dress')) {
+					return { ...item, priority: 0.9, changefreq: ChangeFreqEnum.WEEKLY };
+				}
+				if (u.includes('/portofoliu/') && !u.match(/portofoliu\/(cununie|nunta|trash-the-dress)/)) {
+					return { ...item, priority: 0.85, changefreq: ChangeFreqEnum.WEEKLY };
+				}
+				return item;
+			},
+		}),
+	],
 	vite: {
 		plugins: [tailwindcss()],
 	},

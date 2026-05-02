@@ -1,10 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { seoPages } from '../../data/seo-config';
 ---
 
 <BaseLayout
-	title="Mulțumim — Firobros"
-	description="Mesajul tău a fost trimis. Îți răspundem în curând."
+	title={seoPages.multumim.title}
+	description={seoPages.multumim.description}
 	noindex={true}
 >
 	<div class="mx-auto max-w-lg px-5 py-20 text-center sm:py-28">
@@ -22,7 +23,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 				Acasă
 			</a>
 			<a
-				href="/portofoliu"
+				href="/portofoliu/"
 				class="inline-flex justify-center border border-ink/20 bg-white px-8 py-3 text-xs font-medium uppercase tracking-widest text-ink transition hover:border-ink/40"
 			>
 				Portofoliu

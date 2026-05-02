@@ -19,19 +19,22 @@ const src = heroAsset ?? heroFallback;
 const width = heroAsset?.width ?? 2400;
 const height = heroAsset?.height ?? 1600;
 const alt = heroAsset
-	? 'Firobros — imagine principală'
-	: 'Moment de nuntă în lumină naturală pe coastă';
+	? 'Firobros Image & Film — fotograf și video nunți neoprotestante Cluj'
+	: 'Moment de nuntă în lumină naturală — Firobros Image & Film';
+
+const heroPathHint = firstPath?.replace(/^\.\.\/\.\.\//, '');
 ---
 
 <section
 	class="relative isolate min-h-[70vh] w-full overflow-hidden sm:min-h-[85vh]"
 	aria-label="Imagine principală"
 >
-	<h1 class="sr-only">Firobros — image and film</h1>
+	<h1 class="sr-only">Firobros Image & Film — foto și video nunți neoprotestante, Cluj-Napoca</h1>
 	<div class="hero-media absolute inset-0 z-0" aria-hidden="true">
 		<OptimizedPicture
 			src={src}
 			alt={alt}
+			filePathHint={heroPathHint}
 			width={width}
 			height={height}
 			widths={[640, 960, 1280, 1920, 2400]}

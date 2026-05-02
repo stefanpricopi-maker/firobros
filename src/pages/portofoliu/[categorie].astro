@@ -1,0 +1,14 @@
+---
+import PortofoliuPage from '../../components/portfolio/PortofoliuPage.astro';
+import type { GalleryCategory } from '../../lib/portfolio';
+
+export function getStaticPaths() {
+	const categories: GalleryCategory[] = ['cununie', 'nunta', 'trash-the-dress'];
+	return categories.map((categorie) => ({ params: { categorie } }));
+}
+
+const { categorie } = Astro.params;
+const activeFilter = categorie as GalleryCategory;
+---
+
+<PortofoliuPage activeFilter={activeFilter} />

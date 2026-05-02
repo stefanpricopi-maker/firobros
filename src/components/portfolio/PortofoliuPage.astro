@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GalleryMasonry from '../gallery/GalleryMasonry.astro';
+import { seoForPortfolio } from '../../data/seo-config';
+import { getPortfolioPhotos, type GalleryCategory } from '../../lib/portfolio';
+
+interface Props {
+	activeFilter: GalleryCategory | null;
+}
+
+const { activeFilter } = Astro.props;
+const photos = getPortfolioPhotos(activeFilter);
+
+const { title: pageTitle, description: pageDescription, ogImage: pageOg } = seoForPortfolio(activeFilter);
+
+const chips: { slug: GalleryCategory | null; label: string; href: string }[] = [
+	{ slug: null, label: 'Toate', href: '/portofoliu/' },
+	{ slug: 'cununie', label: 'Cununie', href: '/portofoliu/cununie/' },
+	{ slug: 'nunta', label: 'Nuntă', href: '/portofoliu/nunta/' },
+	{ slug: 'trash-the-dress', label: 'După nuntă (TTD)', href: '/portofoliu/trash-the-dress/' },
+];
+---
+
+<BaseLayout title={pageTitle} description={pageDescription} ogImage={pageOg}>
+	<div class="mx-auto max-w-6xl px-5 pt-16 pb-6 text-center sm:px-8 sm:pt-24">
+		<h1 class="text-4xl font-medium sm:text-5xl">Portofoliu</h1>
+		<p class="mx-auto mt-2 h-px w-16 bg-accent" aria-hidden="true"></p>
+		<p class="mx-auto mt-6 max-w-lg text-ink-muted">
+			Galerie în grilă cu proporții naturale — apasă pe o fotografie pentru a o vedea mare. Include ceremonie,
+			petrecere și sesiuni după nuntă (Trash the Dress).
+		</p>
+
+		<nav aria-label="Categorii portofoliu" class="mt-10 flex flex-wrap justify-center gap-2 sm:gap-3">
+			{
+				chips.map(({ slug, label, href }) => {
+					const active = activeFilter === slug;
+					return (
+						<a
+							href={href}
+							class:list={[
+								'border px-4 py-2 text-xs font-medium uppercase tracking-widest transition',
+								active
+									? 'border-ink bg-ink text-cream'
+									: 'border-ink/15 bg-white/60 text-ink-muted hover:border-ink/30 hover:text-ink',
+							]}
+						>
+							{label}
+						</a>
+					);
+				})
+			}
+		</nav>
+	</div>
+
+	{
+		photos.length === 0 ? (
+			<div class="mx-auto max-w-xl px-5 pb-20 text-center text-ink-muted">
+				<p>
+					{activeFilter
+						? 'Nu există imagini în această categorie. Alege „Toate” sau adaugă fișiere în subfolderul potrivit.'
+						: 'Portofoliul folosește doar imagini din proiect: pune fotografiile în '}
+					{!activeFilter && (
+						<>
+							<code class="text-xs text-ink">src/assets/images/portfolio/cununie/</code>,{' '}
+							<code class="text-xs text-ink">nunta/</code> sau{' '}
+							<code class="text-xs text-ink">trash-the-dress/</code>
+							{' — apoi revino aici; categoriile de sus le filtrează automat.'}
+						</>
+					)}
+				</p>
+			</div>
+		) : (
+			<GalleryMasonry photos={photos} />
+		)
+	}
+</BaseLayout>
