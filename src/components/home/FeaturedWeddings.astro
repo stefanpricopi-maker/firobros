@@ -1,0 +1,43 @@
+---
+import OptimizedPicture from '../OptimizedPicture.astro';
+import { featuredWeddings } from '../../data/featured-weddings';
+---
+
+<section class="border-t border-ink/10 bg-white/40 px-5 py-20 sm:px-8 sm:py-28">
+	<div class="mx-auto max-w-6xl">
+		<div class="text-center">
+			<h2 class="text-3xl font-medium sm:text-4xl">Featured weddings</h2>
+			<p class="mx-auto mt-2 h-px w-16 bg-accent" aria-hidden="true"></p>
+			<p class="mx-auto mt-6 max-w-xl text-ink-muted">
+				A few recent celebrations — click through to explore the full gallery.
+			</p>
+		</div>
+
+		<ul class="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+			{
+				featuredWeddings.map((w) => (
+					<li>
+						<a href={w.href} class="group block">
+							<div class="overflow-hidden rounded-sm bg-ink/5">
+								<OptimizedPicture
+									src={w.imageSrc}
+									alt={w.alt}
+									width={w.width}
+									height={w.height}
+									widths={[400, 640, 800, 1200]}
+									sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+									class="aspect-[3/4] w-full object-cover transition duration-500 group-hover:scale-[1.02]"
+									loading="lazy"
+								/>
+							</div>
+							<div class="mt-4 text-center">
+								<h3 class="font-serif text-xl text-ink group-hover:text-accent">{w.title}</h3>
+								<p class="mt-1 text-sm text-ink-muted">{w.location}</p>
+							</div>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>

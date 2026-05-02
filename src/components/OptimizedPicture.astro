@@ -1,0 +1,46 @@
+---
+/**
+ * Wraps `Picture` with AVIF + WebP sources. Remote URLs must be allowlisted in `astro.config.mjs`.
+ */
+import { Picture } from 'astro:assets';
+
+type Props = {
+	src: import('astro').ImageMetadata | string;
+	alt: string;
+	width: number;
+	height: number;
+	widths?: number[];
+	sizes?: string;
+	class?: string;
+	loading?: 'lazy' | 'eager';
+	fetchpriority?: 'high' | 'low' | 'auto';
+	formats?: ('avif' | 'webp' | 'jpeg' | 'png')[];
+};
+
+const {
+	src,
+	alt,
+	width,
+	height,
+	widths = [400, 640, 960, 1280, 1600],
+	sizes = '(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 1200px',
+	class: className,
+	loading = 'lazy',
+	fetchpriority,
+	formats = ['avif', 'webp'],
+} = Astro.props;
+---
+
+<Picture
+	src={src}
+	alt={alt}
+	width={width}
+	height={height}
+	widths={widths}
+	sizes={sizes}
+	formats={formats}
+	fallbackFormat="jpeg"
+	class={className}
+	loading={loading}
+	fetchpriority={fetchpriority}
+/>

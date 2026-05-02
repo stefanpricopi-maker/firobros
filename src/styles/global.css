@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme {
+	--font-serif: "Cormorant Garamond", "Iowan Old Style", "Apple Garamond", "Palatino Linotype",
+		"URW Palladio L", Palatino, Georgia, serif;
+	--font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+	--color-cream: #faf8f5;
+	--color-ink: #2a2824;
+	--color-ink-muted: #5c5850;
+	--color-accent: #8b7355;
+}
+
+@layer base {
+	html {
+		@apply scroll-smooth antialiased;
+	}
+	body {
+		@apply bg-cream text-ink font-sans text-base font-normal leading-relaxed;
+	}
+	h1,
+	h2,
+	h3 {
+		@apply font-serif text-ink tracking-tight;
+	}
+}

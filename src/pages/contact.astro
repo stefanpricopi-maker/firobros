@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactForm from '../components/contact/ContactForm.astro';
+import SocialLinks from '../components/contact/SocialLinks.astro';
+---
+
+<BaseLayout
+	title="Contact — Aurelia & Lens"
+	description="Inquire about wedding photography — dates, travel, and collections."
+>
+	<div class="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
+		<div class="mx-auto max-w-xl text-center">
+			<h1 class="text-4xl font-medium sm:text-5xl">Contact</h1>
+			<p class="mx-auto mt-2 h-px w-16 bg-accent" aria-hidden="true"></p>
+			<p class="mx-auto mt-6 text-ink-muted">
+				I take a limited number of weddings each year so every couple gets a thoughtful experience.
+			</p>
+		</div>
+
+		<div class="mx-auto mt-16 grid max-w-4xl gap-16 lg:grid-cols-2 lg:gap-20">
+			<ContactForm />
+			<SocialLinks />
+		</div>
+	</div>
+</BaseLayout>

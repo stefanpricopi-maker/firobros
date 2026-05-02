@@ -1,0 +1,86 @@
+---
+---
+
+<section class="mx-auto max-w-xl">
+	<h2 class="font-serif text-2xl font-medium text-ink">Send a note</h2>
+	<p class="mt-2 text-sm text-ink-muted">
+		Share your date and venue — I typically reply within two business days.
+	</p>
+
+	<form
+		name="contact"
+		method="POST"
+		data-netlify="true"
+		netlify-honeypot="bot-field"
+		action="/contact"
+		class="mt-10 space-y-6"
+	>
+		<input type="hidden" name="form-name" value="contact" />
+		<p class="hidden">
+			<label>
+				Do not fill this in: <input name="bot-field" />
+			</label>
+		</p>
+
+		<div>
+			<label for="name" class="block text-xs font-medium uppercase tracking-widest text-ink-muted">
+				Name
+			</label>
+			<input
+				type="text"
+				id="name"
+				name="name"
+				required
+				autocomplete="name"
+				class="mt-2 w-full border border-ink/15 bg-white px-4 py-3 text-ink outline-none transition focus:border-accent"
+			/>
+		</div>
+
+		<div>
+			<label for="email" class="block text-xs font-medium uppercase tracking-widest text-ink-muted">
+				Email
+			</label>
+			<input
+				type="email"
+				id="email"
+				name="email"
+				required
+				autocomplete="email"
+				class="mt-2 w-full border border-ink/15 bg-white px-4 py-3 text-ink outline-none transition focus:border-accent"
+			/>
+		</div>
+
+		<div>
+			<label for="wedding-date" class="block text-xs font-medium uppercase tracking-widest text-ink-muted">
+				Wedding date (optional)
+			</label>
+			<input
+				type="text"
+				id="wedding-date"
+				name="wedding-date"
+				placeholder="Month / year"
+				class="mt-2 w-full border border-ink/15 bg-white px-4 py-3 text-ink outline-none transition focus:border-accent"
+			/>
+		</div>
+
+		<div>
+			<label for="message" class="block text-xs font-medium uppercase tracking-widest text-ink-muted">
+				Message
+			</label>
+			<textarea
+				id="message"
+				name="message"
+				required
+				rows={6}
+				class="mt-2 w-full resize-y border border-ink/15 bg-white px-4 py-3 text-ink outline-none transition focus:border-accent"
+			></textarea>
+		</div>
+
+		<button
+			type="submit"
+			class="w-full border border-ink bg-ink px-6 py-3.5 text-xs font-medium uppercase tracking-widest text-cream transition hover:bg-ink/90 sm:w-auto"
+		>
+			Send message
+		</button>
+	</form>
+</section>
