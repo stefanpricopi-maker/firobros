@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+	title="Pagină negăsită — Firobros"
+	description="Această pagină nu există sau a fost mutată."
+	noindex={true}
+>
+	<div class="mx-auto max-w-lg px-5 py-24 text-center sm:py-32">
+		<p class="font-serif text-7xl font-medium leading-none text-ink/20" aria-hidden="true">404</p>
+		<h1 class="mt-6 font-serif text-3xl font-medium text-ink sm:text-4xl">Nu am găsit pagina</h1>
+		<p class="mt-4 text-ink-muted">
+			Adresa poate fi greșită sau conținutul a fost mutat. Poți reveni acasă sau să ne scrii.
+		</p>
+		<div class="mt-10 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+			<a
+				href="/"
+				class="inline-flex justify-center border border-ink bg-ink px-8 py-3 text-xs font-medium uppercase tracking-widest text-cream transition hover:bg-ink/90"
+			>
+				Acasă
+			</a>
+			<a
+				href="/portofoliu"
+				class="inline-flex justify-center border border-ink/20 bg-white px-8 py-3 text-xs font-medium uppercase tracking-widest text-ink transition hover:border-ink/40"
+			>
+				Portofoliu
+			</a>
+			<a
+				href="/contact"
+				class="inline-flex justify-center border border-transparent px-8 py-3 text-xs font-medium uppercase tracking-widest text-ink-muted underline-offset-4 transition hover:text-ink hover:underline"
+			>
+				Contact
+			</a>
+		</div>
+	</div>
+</BaseLayout>

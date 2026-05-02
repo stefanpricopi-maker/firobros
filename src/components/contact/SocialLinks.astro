@@ -1,23 +1,29 @@
 ---
-/** Replace hrefs with your real profiles before launch. */
-const socials = [
-	{ label: 'Instagram', href: 'https://www.instagram.com/' },
-	{ label: 'Pinterest', href: 'https://www.pinterest.com/' },
-	{ label: 'Email', href: 'mailto:hello@example.com' },
+import { siteContact } from '../../data/site-contact';
+
+const mailto = `mailto:${siteContact.email}`;
+
+const profileLinks = siteContact.profiles
+	.map((p) => ({ ...p, href: p.href.trim() }))
+	.filter((p) => p.href.length > 0);
+
+const links = [
+	...profileLinks.map((p) => ({ ...p, kind: 'external' as const })),
+	{ label: 'E-mail', href: mailto, kind: 'email' as const },
 ];
 ---
 
 <section class="border-t border-ink/10 pt-12">
-	<h2 class="font-serif text-xl font-medium text-ink">Elsewhere</h2>
+	<h2 class="font-serif text-xl font-medium text-ink">Unde ne găsești</h2>
 	<ul class="mt-6 flex flex-wrap gap-x-8 gap-y-3">
 		{
-			socials.map((s) => (
+			links.map((s) => (
 				<li>
 					<a
 						href={s.href}
 						class="text-sm text-ink-muted underline-offset-4 transition hover:text-ink hover:underline"
-						target="_blank"
-						rel="noopener noreferrer"
+						target={s.kind === 'email' ? undefined : '_blank'}
+						rel={s.kind === 'email' ? undefined : 'noopener noreferrer'}
 					>
 						{s.label}
 					</a>

@@ -1,42 +1,59 @@
 ---
+import type { ImageMetadata } from 'astro';
 import OptimizedPicture from '../OptimizedPicture.astro';
 
-const heroSrc =
+// Orice imagine din `src/assets/images/hero/` e folosită ca hero pe pagina principală. Dacă e gol, rămâne Unsplash.
+const heroModules = import.meta.glob<{ default: ImageMetadata }>(
+	'../../assets/images/hero/*.{jpeg,jpg,png,webp,avif,JPG,JPEG,PNG,WEBP,AVIF}',
+	{ eager: true },
+);
+
+const sortedPaths = Object.keys(heroModules).sort();
+const firstPath = sortedPaths[0];
+const heroAsset = firstPath ? heroModules[firstPath]?.default : null;
+
+const heroFallback =
 	'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=2400&q=85';
+
+const src = heroAsset ?? heroFallback;
+const width = heroAsset?.width ?? 2400;
+const height = heroAsset?.height ?? 1600;
+const alt = heroAsset
+	? 'Firobros — imagine principală'
+	: 'Moment de nuntă în lumină naturală pe coastă';
 ---
 
-<section class="relative isolate min-h-[85vh] w-full overflow-hidden sm:min-h-screen">
-	<div class="absolute inset-0">
+<section
+	class="relative isolate min-h-[70vh] w-full overflow-hidden sm:min-h-[85vh]"
+	aria-label="Imagine principală"
+>
+	<h1 class="sr-only">Firobros — image and film</h1>
+	<div class="hero-media absolute inset-0 z-0" aria-hidden="true">
 		<OptimizedPicture
-			src={heroSrc}
-			alt="Bride and groom in soft natural light on the coast"
-			width={2400}
-			height={1600}
+			src={src}
+			alt={alt}
+			width={width}
+			height={height}
 			widths={[640, 960, 1280, 1920, 2400]}
 			sizes="100vw"
-			class="h-full w-full object-cover object-center"
 			loading="eager"
 			fetchpriority="high"
 		/>
-		<div class="absolute inset-0 bg-ink/25" aria-hidden="true"></div>
-	</div>
-
-	<div class="relative z-10 flex min-h-[85vh] flex-col items-center justify-end px-5 pb-16 text-center sm:min-h-screen sm:pb-24">
-		<p class="mb-3 font-sans text-xs font-medium uppercase tracking-[0.35em] text-white/90">
-			Fine-art wedding photography
-		</p>
-		<h1 class="max-w-4xl font-serif text-4xl font-medium leading-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
-			Love, light, and the in-between moments
-		</h1>
-		<p class="mt-6 max-w-xl text-sm text-white/85 sm:text-base">
-			Documenting weddings with an editorial eye and a calm presence — so you can stay present while we
-			preserve the feeling of the day.
-		</p>
-		<a
-			href="/gallery"
-			class="mt-10 inline-flex border border-white/40 bg-white/10 px-8 py-3 text-xs font-medium uppercase tracking-widest text-white backdrop-blur-sm transition hover:bg-white hover:text-ink"
-		>
-			View portfolio
-		</a>
 	</div>
 </section>
+
+<style>
+	.hero-media :global(picture) {
+		display: block;
+		height: 100%;
+		width: 100%;
+	}
+	.hero-media :global(picture img),
+	.hero-media :global(> img) {
+		display: block;
+		height: 100%;
+		width: 100%;
+		object-fit: cover;
+		object-position: center;
+	}
+</style>

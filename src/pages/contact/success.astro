@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+	title="Mulțumim — Firobros"
+	description="Mesajul tău a fost trimis. Îți răspundem în curând."
+	noindex={true}
+>
+	<div class="mx-auto max-w-lg px-5 py-20 text-center sm:py-28">
+		<h1 class="font-serif text-3xl font-medium text-ink sm:text-4xl">Mulțumim!</h1>
+		<p class="mx-auto mt-2 h-px w-16 bg-accent" aria-hidden="true"></p>
+		<p class="mt-8 text-ink-muted">
+			Am primit mesajul tău. Îl citim cu grijă și te contactăm pe e-mail (sau telefon, dacă l-ai lăsat) cât
+			de curând posibil.
+		</p>
+		<div class="mt-12 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:justify-center">
+			<a
+				href="/"
+				class="inline-flex justify-center border border-ink bg-ink px-8 py-3 text-xs font-medium uppercase tracking-widest text-cream transition hover:bg-ink/90"
+			>
+				Acasă
+			</a>
+			<a
+				href="/portofoliu"
+				class="inline-flex justify-center border border-ink/20 bg-white px-8 py-3 text-xs font-medium uppercase tracking-widest text-ink transition hover:border-ink/40"
+			>
+				Portofoliu
+			</a>
+		</div>
+	</div>
+</BaseLayout>

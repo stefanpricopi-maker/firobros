@@ -1,0 +1,102 @@
+---
+import type { ImageMetadata } from 'astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import OptimizedPicture from '../components/OptimizedPicture.astro';
+
+const portraitModules = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/images/despre/*.{jpeg,jpg,png,webp,JPEG,JPG,PNG,WEBP}',
+	{ eager: true },
+);
+
+const portraitPath = Object.keys(portraitModules).sort()[0];
+const portraitAsset = portraitPath ? portraitModules[portraitPath]?.default : null;
+
+const fallbackSrc =
+	'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=85';
+
+const src = portraitAsset ?? fallbackSrc;
+const width = portraitAsset?.width ?? 800;
+const height = portraitAsset?.height ?? 1000;
+
+const ogImageUrl =
+	portraitAsset && Astro.site
+		? new URL(portraitAsset.src, Astro.site).href
+		: fallbackSrc;
+---
+
+<BaseLayout
+	title="Despre — Firobros"
+	description="Cum lucrăm la Firobros: abordare calmă, livrabile foto și film, și pașii până la ziua nunții."
+	ogImage={ogImageUrl}
+>
+	<div class="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
+		<div class="mx-auto max-w-3xl text-center">
+			<h1 class="text-4xl font-medium sm:text-5xl">Despre</h1>
+			<p class="mx-auto mt-2 h-px w-16 bg-accent" aria-hidden="true"></p>
+		</div>
+
+		<div class="mx-auto mt-14 grid max-w-5xl gap-12 lg:grid-cols-12 lg:gap-16 lg:items-start">
+			<div class="lg:col-span-5">
+				<div class="mx-auto max-w-sm overflow-hidden rounded-sm bg-ink/5 lg:mx-0">
+					<OptimizedPicture
+						src={src}
+						alt="Portret echipă Firobros"
+						width={width}
+						height={height}
+						widths={[400, 560, 800, Math.min(width, 1200)]}
+						sizes="(max-width: 1024px) 80vw, 400px"
+						class="w-full object-cover"
+						loading="eager"
+						fetchpriority="high"
+					/>
+				</div>
+				{
+					!portraitAsset && (
+						<p class="mt-4 text-center text-sm text-ink-muted lg:text-left">
+							Adaugă un portret în <code class="text-xs">src/assets/images/despre/</code> (ex.{' '}
+							<code class="text-xs">portret.jpg</code>) — se încarcă automat.
+						</p>
+					)
+				}
+			</div>
+
+			<div class="space-y-8 text-ink-muted lg:col-span-7">
+				<div>
+					<h2 class="font-serif text-2xl text-ink">Cine suntem</h2>
+					<p class="mt-4 leading-relaxed">
+						Firobros este un studio de <strong class="font-medium text-ink">imagine și film</strong>,
+						concentrat pe nunți și evenimente intime. Ne dorim imagini curate, emoție autentică și un
+						ritm vizual care îmbătrânește frumos — fără trenduri agresive sau culori exagerate.
+					</p>
+				</div>
+
+				<div>
+					<h2 class="font-serif text-2xl text-ink">Cum lucrăm</h2>
+					<ol class="mt-4 list-decimal space-y-3 pl-5 leading-relaxed">
+						<li>
+							<strong class="text-ink">Înainte de zi:</strong> discutăm despre locație, lumină și
+							momentele care contează pentru voi; pregătim un plan flexibil, nu o listă rigidă.
+						</li>
+						<li>
+							<strong class="text-ink">În ziua evenimentului:</strong> suntem prezenți, dar discreți;
+							coordonăm punctele foto/film cu organizatorii ca totul să curgă natural.
+						</li>
+						<li>
+							<strong class="text-ink">După:</strong> selecție și editare manuală; primiți galerie
+							și, unde e cazul, teaser sau film — în formate optimizate pentru web și arhivare.
+						</li>
+					</ol>
+				</div>
+
+				<p class="pt-2">
+					<a
+						href="/contact"
+						class="inline-flex border border-ink bg-ink px-6 py-3 text-xs font-medium uppercase tracking-widest text-cream transition hover:bg-ink/90"
+					>
+						Programează o discuție
+					</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</BaseLayout>

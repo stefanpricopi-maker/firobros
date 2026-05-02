@@ -2,9 +2,10 @@
 ---
 
 <section class="mx-auto max-w-xl">
-	<h2 class="font-serif text-2xl font-medium text-ink">Send a note</h2>
+	<h2 class="font-serif text-2xl font-medium text-ink">Trimite un mesaj</h2>
 	<p class="mt-2 text-sm text-ink-muted">
-		Share your date and venue — I typically reply within two business days.
+		Spune-ne data evenimentului, locația și ce vă doriți la foto și film. Răspundem de obicei în 1–2 zile
+		lucrătoare.
 	</p>
 
 	<form
@@ -12,19 +13,19 @@
 		method="POST"
 		data-netlify="true"
 		netlify-honeypot="bot-field"
-		action="/contact"
+		action="/contact/success/"
 		class="mt-10 space-y-6"
 	>
 		<input type="hidden" name="form-name" value="contact" />
 		<p class="hidden">
 			<label>
-				Do not fill this in: <input name="bot-field" />
+				Nu completa acest câmp: <input name="bot-field" tabindex="-1" autocomplete="off" />
 			</label>
 		</p>
 
 		<div>
 			<label for="name" class="block text-xs font-medium uppercase tracking-widest text-ink-muted">
-				Name
+				Nume
 			</label>
 			<input
 				type="text"
@@ -32,13 +33,14 @@
 				name="name"
 				required
 				autocomplete="name"
-				class="mt-2 w-full border border-ink/15 bg-white px-4 py-3 text-ink outline-none transition focus:border-accent"
+				placeholder="Prenume sau nume complet"
+				class="mt-2 w-full border border-ink/15 bg-white px-4 py-3 text-ink outline-none transition placeholder:text-ink-muted/50 focus:border-accent"
 			/>
 		</div>
 
 		<div>
 			<label for="email" class="block text-xs font-medium uppercase tracking-widest text-ink-muted">
-				Email
+				E-mail
 			</label>
 			<input
 				type="email"
@@ -46,33 +48,49 @@
 				name="email"
 				required
 				autocomplete="email"
-				class="mt-2 w-full border border-ink/15 bg-white px-4 py-3 text-ink outline-none transition focus:border-accent"
+				placeholder="exemplu@email.com"
+				class="mt-2 w-full border border-ink/15 bg-white px-4 py-3 text-ink outline-none transition placeholder:text-ink-muted/50 focus:border-accent"
+			/>
+		</div>
+
+		<div>
+			<label for="phone" class="block text-xs font-medium uppercase tracking-widest text-ink-muted">
+				Telefon <span class="font-normal normal-case text-ink-muted/80">(opțional)</span>
+			</label>
+			<input
+				type="tel"
+				id="phone"
+				name="phone"
+				autocomplete="tel"
+				placeholder="+40 …"
+				class="mt-2 w-full border border-ink/15 bg-white px-4 py-3 text-ink outline-none transition placeholder:text-ink-muted/50 focus:border-accent"
 			/>
 		</div>
 
 		<div>
 			<label for="wedding-date" class="block text-xs font-medium uppercase tracking-widest text-ink-muted">
-				Wedding date (optional)
+				Data evenimentului <span class="font-normal normal-case text-ink-muted/80">(opțional)</span>
 			</label>
 			<input
 				type="text"
 				id="wedding-date"
 				name="wedding-date"
-				placeholder="Month / year"
-				class="mt-2 w-full border border-ink/15 bg-white px-4 py-3 text-ink outline-none transition focus:border-accent"
+				placeholder="ex.: 12 iulie 2026 sau luna / anul"
+				class="mt-2 w-full border border-ink/15 bg-white px-4 py-3 text-ink outline-none transition placeholder:text-ink-muted/50 focus:border-accent"
 			/>
 		</div>
 
 		<div>
 			<label for="message" class="block text-xs font-medium uppercase tracking-widest text-ink-muted">
-				Message
+				Mesaj
 			</label>
 			<textarea
 				id="message"
 				name="message"
 				required
 				rows={6}
-				class="mt-2 w-full resize-y border border-ink/15 bg-white px-4 py-3 text-ink outline-none transition focus:border-accent"
+				placeholder="Locație, număr de invitați, ce vă doriți la album / film…"
+				class="mt-2 w-full resize-y border border-ink/15 bg-white px-4 py-3 text-ink outline-none transition placeholder:text-ink-muted/50 focus:border-accent"
 			></textarea>
 		</div>
 
@@ -80,7 +98,7 @@
 			type="submit"
 			class="w-full border border-ink bg-ink px-6 py-3.5 text-xs font-medium uppercase tracking-widest text-cream transition hover:bg-ink/90 sm:w-auto"
 		>
-			Send message
+			Trimite mesajul
 		</button>
 	</form>
 </section>

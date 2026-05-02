@@ -1,27 +1,23 @@
 📄 Project Specifications: Wedding Photography Portfolio
-1. Tehnologii Core
-Framework: Astro 4.x+ (SSG - Static Site Generation).
 
-Styling: Tailwind CSS (Modern, Utility-first).
+## 1. Tehnologii Core
+- **Framework:** Astro 6.x (SSG).
+- **Styling:** Tailwind CSS 4 (utility-first).
+- **Componente:** Astro (JS minim; lightbox PhotoSwipe pe portofoliu).
+- **Imagini:** `astro:assets` (WebP/AVIF, rezoluții multiple); poze locale din `src/assets/images/portfolio/`.
+- **Deployment:** Netlify (via GitHub).
 
-Componente: Astro Components (Zero JS default).
+## 2. Arhitectură Informațională (implementat)
+- **Acasă (`/`):** Hero full-bleed, secțiune **Best of**, CTA-uri către portofoliu și contact.
+- **Portofoliu (`/portofoliu`):** Masonry + filtre **Cununie / Nuntă / Trash the dress** (`?categorie=…`); lightbox la click.
+- **Despre (`/despre`):** Text, portret, pașii de lucru.
+- **Contact (`/contact`):** Netlify Forms (`data-netlify`).
 
-Imagini: astro:assets pentru procesare locală (WebP/AVIF, rezoluții multiple).
+Redirect: `/gallery` → `/portofoliu/` (Netlify).
 
-Deployment: Netlify (via GitHub).
+## 3. Design & UX
+- Stil fine-art, minimalist, spații albe.
+- **Tipografie:** Playfair Display (titluri), Inter (text).
+- **Mobile first:** masonry și lightbox tactil-friendly.
 
-2. Arhitectură Informațională
-Home: Hero Section (impact vizual), selecție "Best Of", CTA către contact.
-
-Portofoliu: Pagină cu categorii (ex: Cununie, Nuntă, Trash the Dress) sau un scroll infinit cu Masonry Grid.
-
-Despre: Text personalizat, fotografie de profil, workflow (cum lucrezi).
-
-Contact: Formular (integrat cu Netlify Forms — gratuit și fără cod de backend).
-
-3. Design & UX
-Stil: Fine-art, minimalist, spații albe generoase.
-
-Tipografie: Serif pentru titluri (ex: Playfair Display), Sans-serif pentru text (ex: Inter).
-
-Mobile First: Galeriile trebuie să fie ușor de navigat cu degetul.
+*Vezi `todo.md` pentru pașii rămași (git, imagini reale, domeniu, PageSpeed).*

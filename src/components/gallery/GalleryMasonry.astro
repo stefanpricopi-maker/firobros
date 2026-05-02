@@ -1,23 +1,36 @@
 ---
 import OptimizedPicture from '../OptimizedPicture.astro';
-import { galleryPhotos } from '../../data/gallery-photos';
+import type { PortfolioEntry } from '../../lib/portfolio';
+
+interface Props {
+	photos: PortfolioEntry[];
+}
+
+const { photos } = Astro.props;
 ---
 
-<div class="masonry-columns mx-auto max-w-6xl px-5 pb-20 sm:px-8">
+<div id="portfolio-masonry" class="masonry-columns mx-auto max-w-6xl px-5 pb-20 sm:px-8">
 	<ul class="masonry-inner">
 		{
-			galleryPhotos.map((photo) => (
+			photos.map((photo) => (
 				<li class="masonry-item mb-4 break-inside-avoid sm:mb-5">
-					<OptimizedPicture
-						src={photo.src}
-						alt={photo.alt}
-						width={photo.width}
-						height={photo.height}
-						widths={[400, 600, 800, 1000, 1200]}
-						sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-						class="w-full rounded-sm bg-ink/5"
-						loading="lazy"
-					/>
+					<a
+						href={photo.lightboxUrl}
+						data-pswp-width={photo.pswpWidth}
+						data-pswp-height={photo.pswpHeight}
+						class="block overflow-hidden rounded-sm bg-ink/5 outline-none ring-offset-2 transition hover:opacity-95 focus-visible:ring-2 focus-visible:ring-accent"
+					>
+						<OptimizedPicture
+							src={photo.src}
+							alt={photo.alt}
+							width={photo.width}
+							height={photo.height}
+							widths={[400, 600, 800, 1000, 1200]}
+							sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+							class="w-full rounded-sm bg-ink/5"
+							loading="lazy"
+						/>
+					</a>
 				</li>
 			))
 		}
@@ -45,3 +58,18 @@ import { galleryPhotos } from '../../data/gallery-photos';
 		display: block;
 	}
 </style>
+
+<script>
+	import PhotoSwipeLightbox from 'photoswipe/lightbox';
+	import 'photoswipe/style.css';
+
+	const gallery = document.getElementById('portfolio-masonry');
+	if (gallery) {
+		const lightbox = new PhotoSwipeLightbox({
+			gallery: '#portfolio-masonry',
+			children: 'a',
+			pswpModule: () => import('photoswipe'),
+		});
+		lightbox.init();
+	}
+</script>

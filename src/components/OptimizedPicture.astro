@@ -1,6 +1,9 @@
 ---
 /**
  * Wraps `Picture` with AVIF + WebP sources. Remote URLs must be allowlisted in `astro.config.mjs`.
+ *
+ * În `astro dev`, imaginile remote ocolesc `/_image` (Sharp/fetch pot da 500 în unele medii) și folosesc
+ * direct URL-ul — la `astro build` rămâne optimizarea completă.
  */
 import { Picture } from 'astro:assets';
 
@@ -29,18 +32,52 @@ const {
 	fetchpriority,
 	formats = ['avif', 'webp'],
 } = Astro.props;
+
+const isDevRemote =
+	import.meta.env.DEV &&
+	typeof src === 'string' &&
+	(src.startsWith('https://') || src.startsWith('http://'));
+
+function remoteSrcAtWidth(url: string, w: number): string {
+	try {
+		const u = new URL(url);
+		u.searchParams.set('w', String(w));
+		return u.href;
+	} catch {
+		return url;
+	}
+}
 ---
 
-<Picture
-	src={src}
-	alt={alt}
-	width={width}
-	height={height}
-	widths={widths}
-	sizes={sizes}
-	formats={formats}
-	fallbackFormat="jpeg"
-	class={className}
-	loading={loading}
-	fetchpriority={fetchpriority}
-/>
+{
+	isDevRemote ? (
+		<img
+			src={remoteSrcAtWidth(src as string, width)}
+			srcset={(widths as number[])
+				.map((w) => `${remoteSrcAtWidth(src as string, w)} ${w}w`)
+				.join(', ')}
+			sizes={sizes}
+			alt={alt}
+			width={width}
+			height={height}
+			class={className}
+			loading={loading}
+			fetchpriority={fetchpriority}
+			decoding="async"
+		/>
+	) : (
+		<Picture
+			src={src}
+			alt={alt}
+			width={width}
+			height={height}
+			widths={widths}
+			sizes={sizes}
+			formats={formats}
+			fallbackFormat="jpeg"
+			class={className}
+			loading={loading}
+			fetchpriority={fetchpriority}
+		/>
+	)
+}

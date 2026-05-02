@@ -1,42 +1,56 @@
+import type { ImageMetadata } from 'astro';
+
 export type FeaturedWedding = {
 	title: string;
 	location: string;
 	href: string;
-	imageSrc: string;
+	imageSrc: ImageMetadata;
 	width: number;
 	height: number;
 	alt: string;
 };
 
-export const featuredWeddings: FeaturedWedding[] = [
-	{
-		title: 'Tuscany',
-		location: 'Villa garden reception',
-		href: '/gallery',
-		imageSrc:
-			'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1600&q=85',
-		width: 1600,
-		height: 1067,
-		alt: 'Couple dancing outdoors at golden hour',
-	},
-	{
-		title: 'Provence',
-		location: 'Lavender fields at dusk',
-		href: '/gallery',
-		imageSrc:
-			'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=1600&q=85',
-		width: 1600,
-		height: 1067,
-		alt: 'Wedding couple walking through lavender',
-	},
-	{
-		title: 'Coastal California',
-		location: 'Big Sur cliffs',
-		href: '/gallery',
-		imageSrc:
-			'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1600&q=85',
-		width: 1600,
-		height: 1067,
-		alt: 'Elegant wedding portrait by the ocean',
-	},
+const featuredImages = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/images/featured/*.{jpeg,jpg,png,webp,JPEG,JPG,PNG,WEBP}',
+	{ eager: true },
+);
+
+/**
+ * Câte un rând pentru fiecare imagine din `featured/`, **în aceeași ordine** ca sortarea alfabetică a fișierelor.
+ * Dacă lipsește un rând, titlul se ia din numele fișierului.
+ */
+export const featuredDetails: { title: string; location: string; href?: string }[] = [
+	// Exemplu după ce adaugi poze în `src/assets/images/featured/`:
+	// { title: 'Ana & Dan', location: 'Cluj-Napoca', href: '/portofoliu' },
+	// { title: 'Maria & Paul', location: 'București' },
 ];
+
+function titleFromPath(path: string): string {
+	const base = path.split('/').pop()?.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ') ?? 'Proiect';
+	return base.charAt(0).toUpperCase() + base.slice(1);
+}
+
+export function getFeaturedWeddings(): FeaturedWedding[] {
+	const paths = Object.keys(featuredImages).sort();
+	const out: FeaturedWedding[] = [];
+	for (let i = 0; i < paths.length; i++) {
+		const path = paths[i];
+		const mod = featuredImages[path];
+		if (!mod?.default) continue;
+		const img = mod.default;
+		const d = featuredDetails[i];
+		const title = d?.title ?? titleFromPath(path);
+		const location = d?.location ?? '';
+		const href = d?.href ?? '/portofoliu';
+		out.push({
+			title,
+			location,
+			href,
+			imageSrc: img,
+			width: img.width,
+			height: img.height,
+			alt: title,
+		});
+	}
+	return out;
+}

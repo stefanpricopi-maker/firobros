@@ -1,36 +1,37 @@
-Faza 1: Setup Inițial
-[ ] Deschide un folder gol în Cursor.
+# Roadmap Firobros
 
-[ ] Rulează în terminal: npm create astro@latest . (alege "Empty Project" și "Yes" la TypeScript).
+## În lucru acum (dezvoltare site)
 
-[ ] Instalează Tailwind: npx astro add tailwind.
+### Conținut & brand
+- [ ] Texte **100% RO** (hero, home, contact — încă există engleză pe unele secțiuni).
+- [x] **Film**: secțiune pe **/** (`#film`), embed YouTube sau Vimeo opțional în `src/data/film.ts`, link în nav.
+- [x] **Social / email**: sursă unică `src/data/site-contact.ts` (email + profile opționale); UI în `SocialLinks.astro` — completează href-urile reale înainte de launch.
+- [ ] **Featured / Best of**: înlocuiește titluri și locații din `featured-weddings.ts` cu proiecte reale sau ascunde până ai materiale.
 
-[ ] Inițializează Git: git init și fă primul commit.
+### Imagini
+- [x] **Portofoliu**: doar imagini locale din `portfolio/{cununie,nunta,trash-the-dress}/`; `gallery-photos.ts` e gol (adaugă URL-uri doar dacă vrei stock în plus).
+- [x] **Despre**: portret din `src/assets/images/despre/*` (primul fișier alfabetic); fără fișier → fallback Unsplash + mesaj scurt.
+- [x] **Best of**: imagini din `src/assets/images/featured/` + titluri opționale în `featuredDetails` (`featured-weddings.ts`); fără fișiere → secțiunea e ascunsă.
 
-Faza 2: Structura de Bază (Cursor Composer)
-[ ] Layout: Creează un Layout.astro care să includă Google Fonts, Navbar-ul și Footer-ul.
+### Contact & conversie
+- [x] Formular: etichete/placeholder-e în română; câmp opțional **Telefon**; `action="/contact/success/"` pentru Netlify.
+- [x] Pagină **Mulțumim**: `/contact/success/` (`contact/success.astro`, `noindex`).
+- [ ] **Test Netlify Forms** după primul deploy (verifică în dashboard că mesajul ajunge — pas manual).
 
-[ ] Assets: Creează folderul src/assets/images/portfolio/ și pune acolo 5-10 poze de test.
+### Calitate
+- [x] **404** personalizată (`src/pages/404.astro` → `404.html`, `noindex` în layout).
+- [x] Accesibilitate de bază: link „Sari la conținut”, `#main-content`, `focus-visible` pe controale interactive, `prefers-reduced-motion` pentru scroll; verificare manuală contrast/alt la conținut nou.
 
-[ ] Configurare Imagini: Cere-i lui Cursor să configureze un script care citește automat toate imaginile dintr-un folder (folosind import.meta.glob).
+---
 
-Faza 3: Dezvoltare Pagini
-[ ] Homepage: Implementează un Hero section cu o imagine full-bleed care nu încetinește LCP (Largest Contentful Paint).
+## Spre final (înainte de launch)
 
-[ ] Galerie Masonry: Implementează un layout de tip "masonry" (folosind CSS columns sau Grid) care să păstreze aspectul original al pozelor (portret/landscape).
+- [ ] **`site` / domeniu** în `astro.config.mjs` (deja pregătit cu `URL` Netlify + `PUBLIC_SITE_URL` local) — vezi `.env.example`.
+- [ ] `git init`, GitHub, Netlify legat de repo.
+- [ ] PageSpeed Insights mobil; ajustări fine dacă e nevoie.
 
-[ ] Lightbox: Adaugă o librărie ușoară de tip PhotoSwipe sau fslightbox (fără bătăi de cap cu JS greu).
+---
 
-Faza 4: Optimizare și SEO
-[ ] Metadata: Adaugă tag-uri dinamice de SEO (Title, Description, OpenGraph Image pentru Facebook/Instagram).
-
-[ ] Sitemap: Instalează @astrojs/sitemap pentru Google.
-
-[ ] Netlify Forms: Configurează formularul de contact cu atributul data-netlify="true" pentru a primi mesajele direct în dashboard-ul Netlify.
-
-Faza 5: Deployment
-[ ] Creează repository pe GitHub și dă-i push.
-
-[ ] Conectează contul de Netlify la GitHub.
-
-[ ] Verifică scorul în Google PageSpeed Insights (țintim 95-100 pe mobil).
+## Faza 1 (deja făcut)
+- [x] Astro + TypeScript + Tailwind
+- [x] Layout, portofoliu (masonry, categorii, lightbox), despre, contact, SEO de bază, sitemap
